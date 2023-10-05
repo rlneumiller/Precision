@@ -1,10 +1,10 @@
 bl_info = {
-    "name": "Configure blender for precision modeling",
+    "name": "Precision",
     "author": "rlneumiler@gmail.com", "various blenderheads, the interwebs"
     "version": (1, 0),
     "blender": (2, 80, 0),
     "location": "View3D > UI > Tools",
-    "description": "Configure precision modeling",
+    "description": "Configure precision modeling settings",
     "warning": "",
     "doc_url": "",
     "category": "3D View",
@@ -51,7 +51,8 @@ def register():
         bpy.utils.register_class(cls)
 
 def unregister():
-    bpy.utils.unregister_class(classes)
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
 
 if __name__ == "__main__":
     register()
