@@ -41,7 +41,7 @@ class CUSTOM_PT_myPanel(bpy.types.Panel):
         global custom_icons
         layout = self.layout
         layout.operator(PRECISION_OT_func.bl_idname)
-        self.layout.label(text="custom icon test", icon_value=custom_icons["custom_icon"].icon_id)
+        
 
 
 
