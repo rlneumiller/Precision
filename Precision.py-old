@@ -1,6 +1,6 @@
 bl_info = {
     "name": "Precision",
-    "author": "rlneumiler@gmail.com",
+    "author": "rlneumiler@gmail.com and various blenderheads",
     "version": (1, 0),
     "blender": (3, 0, 0),
     "location": "View3D > UI > Tools",
@@ -12,8 +12,9 @@ bl_info = {
 
 import os
 import bpy
-
-class PRECISION_OT_Func(bpy.types.Operator):
+import bpy.utils.previews
+    
+class PRECISION_OT_func(bpy.types.Operator):
     bl_idname = "precision.func"
     bl_label = "Set mm precision"
 
@@ -29,34 +30,29 @@ class PRECISION_OT_Func(bpy.types.Operator):
         
         gridscale_to_mm()
         return {'FINISHED'}
-
-import bpy
-
-class VIEW3D_PT_PrecisionPanel(bpy.types.Panel):
+    
+class CUSTOM_PT_myPanel(bpy.types.Panel):
     bl_label = "Configure Precision"
-    bl_idname = "VIEW3D_PT_PrecisionPanel"
-    bl_space_type = 'VIEW_3D'
+    bl_idname = "OBJECT_PT_custom_panel"
+    bl_space_type = "VIEW_3D"   
     bl_region_type = "UI"
     bl_category = "Precision"
 
     def draw(self, context):
+        global custom_icons
         layout = self.layout
-        layout.operator(PRECISION_OT_Func.bl_idname)
-
-def grid_scale_to_mm():
-    """Set grid scale to mm in 3D view areas."""
-    for window in bpy.data.window_managers[0].windows:
-        for area in window.screen.areas:
-            if area.type != 'VIEW_3D':
-                continue
-
+        layout.operator(PRECISION_OT_func.bl_idname)
+        
+def gridscale_to_mm()
+    for area in bpy.data.screens["Scripting"].areas:
+        if area.type == 'VIEW_3D':
             for space in area.spaces:
                 if space.type == 'VIEW_3D':
-                    space.overlay.grid_scale = 0.001
+                    space.overlay.grid_scale = .001
                     break
 
-classes = (PRECISION_OT_Func, VIEW3D_PT_PrecisionPanel)
 
+classes = (PRECISION_OT_func, CUSTOM_PT_myPanel)
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -67,3 +63,5 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+    
+    

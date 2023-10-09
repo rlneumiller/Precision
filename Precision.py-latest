@@ -12,7 +12,7 @@ bl_info = {
 
 import os
 import bpy
-
+    
 class PRECISION_OT_Func(bpy.types.Operator):
     bl_idname = "precision.func"
     bl_label = "Set mm precision"
@@ -29,9 +29,7 @@ class PRECISION_OT_Func(bpy.types.Operator):
         
         gridscale_to_mm()
         return {'FINISHED'}
-
-import bpy
-
+    
 class VIEW3D_PT_PrecisionPanel(bpy.types.Panel):
     bl_label = "Configure Precision"
     bl_idname = "VIEW3D_PT_PrecisionPanel"
@@ -43,7 +41,28 @@ class VIEW3D_PT_PrecisionPanel(bpy.types.Panel):
         layout = self.layout
         layout.operator(PRECISION_OT_Func.bl_idname)
 
-def grid_scale_to_mm():
+##################################################################################
+class PrecisionPreferences(bpy.types.AddonPreferences):
+    bl_idname = __name__
+    print(__name__)
+
+    debug: bpy.props.BoolProperty(
+        name = "Enable console debug output from PDT scripts",
+        default = False,
+        description = "NOTE: Does not enable debugging globally in Blender (only in PDT scripts)",
+    )
+
+    def draw(self, context):
+        layout = self.layout
+
+        box = layout.box()
+        row1 = box.row()
+        row2 = box.row()
+        row1.prop(self, "debug")
+
+##################################################################################
+            
+def gridscale_to_mm():
     """Set grid scale to mm in 3D view areas."""
     for window in bpy.data.window_managers[0].windows:
         for area in window.screen.areas:
@@ -55,15 +74,25 @@ def grid_scale_to_mm():
                     space.overlay.grid_scale = 0.001
                     break
 
-classes = (PRECISION_OT_Func, VIEW3D_PT_PrecisionPanel)
+def in_text_editor():
+    """Check if we are executing from within the script editor."""
+    return bpy.context.area.type == 'TEXT_EDITOR'
+
+
 
 def register():
+    """Required by blender addon's."""
+    classes = (PRECISION_OT_Func, VIEW3D_PT_PrecisionPanel)
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
+    """Required by blender addon's."""
+    classes = (PRECISION_OT_Func, VIEW3D_PT_PrecisionPanel)
     for cls in classes:
         bpy.utils.unregister_class(cls)
 
-if __name__ == "__main__":
+if in_text_editor():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("Precision addon cleared the console for debugging")
     register()
