@@ -155,3 +155,4 @@ cython_debug/
 .py_old
 .zip_old
 .py_new
+.py_latest
