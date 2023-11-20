@@ -1,1 +1,1 @@
-cp precision.zip e:\Onedrive\blender\addons
+cp precision.zip c:\Onedrive\blender\addons
