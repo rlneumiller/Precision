@@ -27,7 +27,7 @@ class PRECISION_OT_Func(bpy.types.Operator):
         space.clip_end = 10000
         space.clip_start = 0.01   
         
-        gridscale_to_mm()
+        grid_scale_to_mm()
         return {'FINISHED'}
 
 import bpy
